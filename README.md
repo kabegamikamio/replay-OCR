@@ -44,6 +44,7 @@ YouTubeに投稿されているWoTBのリプレイ動画から試合の勝敗等
 - Tesseract-OCR v5.3.0.20221222
 
 ### 必要パッケージ等
+同梱バッチファイル `package.bat` または `package` をコマンドプロンプトやPowerShell上で実行することで自動インストールが可能。
 - Tesseract-OCR
 - pafy
 - cv2
