@@ -37,7 +37,7 @@ if(__name__ == '__main__'):
 
     print("cpus: " + str(cpus))
 
-    for i in range(cpus-1):
+    for i in range(cpus-2):
         print("process " + str(i) + " launched")
         process = Process(target=mydefs.captureVideo, args=(best_url, start, end, date, False))
         process.start()
