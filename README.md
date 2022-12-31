@@ -34,6 +34,7 @@ Coded by kabegamikamio (discord: 壁紙紙雄#1616)
 YouTubeに投稿されているWoTBのリプレイ動画から試合の勝敗等のデータを抽出するプログラムです。
 
 ### チェンジログ
+[2022/12/31] beta v1.1 リリース (すべての論理コアを使用してしまい、プログラム実行中他の作業が難しくなる問題を緩和)
 [2022/12/31] beta v1.0 リリース
 
 ### 動作確認環境
@@ -79,7 +80,7 @@ YouTubeに投稿されているWoTBのリプレイ動画から試合の勝敗等
 ## 設計
 定義ファイルは `import mydefs` で利用可能。実行ファイル (`run*.py`) をコンパイルして実行する。
 ```
-WT101
+replay-OCR-main
 |-runCaptureOCR.py      # メインのpyファイル。これを実行
 |-runCapture.py         # PNG書き出し有効でキャプチャ実行
 |-runOCR.py             # 指定ディレクトリ内のPNGファイルをOCR
