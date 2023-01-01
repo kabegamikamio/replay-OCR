@@ -1,19 +1,35 @@
 import Levenshtein
+from mydefs import LANG
 
 # テキストがマップを表しているか
 # レーベンシュタイン距離をもとに判定
 # マップである場合はマップ名を返す
 def ifMap(txt):
     DIST_THRE = 0.5
-    map_list = ['ヒメルズドルフ', 'アルペンシュタット', '黒き黄金の村',
+    map_jpn  = ['ヒメルズドルフ', 'アルペンシュタット', '黒き黄金の村',
                 'ミデルブルフ', '運河', 'カスティーリャ', '砂漠の砂',
                 '王朝の真珠', 'ファウスト', 'ディスペア砦', '廃工場',
                 'ヘラス', 'マヤ遺跡', 'モレンダイク', '沿岸要塞',
                 'ニューベイ', 'ノルマンディー', 'オアシスの椰子',
                 '港湾', 'ロックフィールド', 'ヴィニヤード', '冬のマリノフカ',
                 'ユーコン']
+    map_eng  = ['Alpen','BGV','Canal','Castilla','Desert Sands',
+                'Dynasty\'s Pearl','Faust','Fort Despair','Ghost Factory',
+                'Hellas','Mayan Ruins','Middleburg','Molendijk','Naval Frontier',
+                'New Bay','Normandy','Oasis','Port Bay','Rockfield','Vineyards',
+                'Winter Malinovka','Yukon']
+    map_rus  = ['АЛЬПЕНШТАДТ','ЗОЛОТАЯ ДОЛИНА','КАНАЛ','КАСТИЛЬЯ','ЭЛЬ-АЛАМЕЙН',
+                'ЖЕМЧУЖНЫЙ ГОРОД','ФАУСТ',' ФОРТ','ПРОМЗОНА','ЭЛЛАДА','ДРЕВНИЕ ПИРАМИДЫ',
+                'МИДДЛБУРГ','МОЛЕНДЕЙК','МОРСКОЙ РУБЕЖ','НЬЮ-БЭЙ','НОРМАНДИЯ','ГОРЯЩИЕ ПЕСКИ',
+                'ПОРТ','БАЛТИЙСКИЙ ЩИТ','ВИНОГРАДНИКИ','ЗИМНЯЯ МАЛИНОВКА','ЮКОН']
+
+    if LANG == 'eng':
+        map_list = map_eng
+    elif LANG == 'jpn':
+        map_list = map_jpn
+
     map_dist = []
-    txt = txt.strip()
+    # txt = txt.strip()
     for map in map_list:
         lev_dist = Levenshtein.distance(map, txt)
         devider = max([len(txt), len(map)])
@@ -30,8 +46,16 @@ def ifMap(txt):
 # ロード画面である場合はTrueを返す
 def ifLoading(txt):
     DIST_THRE = 0.5
-    desc = '陣地を占領し、敵車輌を撃破せよ。'
-    txt = txt.strip()
+    desc_jpn = '陣地を占領し、敵車輌を撃破せよ。'
+    desc_eng = 'Objective:  capture bases and destroy enemy tanks.'
+    desc_rus = 'Задача. захватывать точки и уничтожать танки противника.'
+
+    if LANG == 'eng':
+        desc = desc_eng
+    elif LANG == 'jpn':
+        desc = desc_jpn
+
+    # txt = txt.strip()
     lev_dist = Levenshtein.distance(desc, txt)
     devider = max([len(txt), len(desc)])
     lev_dist = lev_dist / devider
@@ -48,10 +72,21 @@ def ifLoading(txt):
 def ifResult(txt):
     DIST_THRE = 0.5
     result_dist = []
-    result_list = ['勝利!敵車輌が全滅した', '敗北!味方車輌が全滅した',
+    result_jpn =   ['勝利!敵車輌が全滅した', '敗北!味方車輌が全滅した',
                     '勝利!味方チームが1,000勝利ポイントを獲得',
                     '敗北!敵チームが1,000勝利ポイントを獲得']
-    txt = txt.strip()
+    result_eng =   ['Victory!All enemy tanks destroyed',
+                    'Defeat All allied tanks destroyed',
+                    'Victory! Your team earned 1,000 victory points',
+                    'Defeat enemy team earned 1,000 victory points']
+    result_rus =   ['Победа! Союзники заработали 1000 очков иобеды',]
+
+    if LANG == 'eng':
+        result_list = result_eng
+    elif LANG == 'jpn':
+        result_list = result_jpn
+
+    # txt = txt.strip()
     for i in result_list:
         lev_dist = Levenshtein.distance(i, txt)
         devider = max([len(txt), len(i)])

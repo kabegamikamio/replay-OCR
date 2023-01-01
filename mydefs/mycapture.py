@@ -1,9 +1,10 @@
 import os
 import cv2
 from PIL import Image
-import pafy
 from tqdm import tqdm
 from mydefs.myocr import OCRmain
+
+LANG = 'eng'
 
 # CV2のマルチプロセスを無効化
 cv2.setNumThreads(0)

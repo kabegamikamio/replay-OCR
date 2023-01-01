@@ -9,15 +9,15 @@ import mydefs
 
 # OCRのメイン部分
 # 直列・並列にする場合もこのメソッドを呼び出す
-# 引数: 画像のnparray、ocrエンジン、ocrビルダー、言語(デフォルト: 日本語)
+# 引数: 画像のnparray、ocrエンジン、ocrビルダー、言語(デフォルト: 英語)
 # 戻り値: 画像から検出されたテキスト
-def OCRcore(im, engine, builder, lang="jpn"):
-    txt = engine.image_to_string(im, lang=lang)
+def OCRcore(im, engine, builder, lang='eng'):
+    txt = engine.image_to_string(im, builder=builder, lang=lang)
     return txt
 
 # 外部からOCRを呼び出すときに使うメソッド
 # captureVideo()などで使う
-def OCRmain(im):
+def OCRmain(im, lang='eng'):
     result_list = ['win,elimination', 'lose,elimination',
                     'win,points', 'lose,points']
 
@@ -28,13 +28,13 @@ def OCRmain(im):
     # OCRエンジンの設定
     builder = pyocr.builders.TextBuilder(tesseract_layout = 5)
 
-    im1, im2, im3 = mydefs.cropPicture4x3(im)
+    im1, im2, im3, im4, im5, im6 = mydefs.cropPicture4x3(im)
     im1 = mydefs.pic2bin(im1, 200)
     im2 = mydefs.pic2bin(im2, 200)
     im3 = mydefs.pic2bin(im3, 170)
-    txt1 = OCRcore(im1, engine, builder, lang='jpn')
-    txt2 = OCRcore(im2, engine, builder, lang='jpn')
-    txt3 = OCRcore(im3, engine, builder, lang='jpn')
+    txt1 = OCRcore(im1, engine, builder, lang=lang)
+    txt2 = OCRcore(im2, engine, builder, lang=lang)
+    txt3 = OCRcore(im3, engine, builder, lang=lang)
     map = mydefs.ifMap(txt1)
     load = mydefs.ifLoading(txt2)
     result = mydefs.ifResult(txt3)
@@ -56,7 +56,7 @@ def countFiles(dir):
     return count
 
 # OCRを直列に実行
-def sequentialOCR(dir):
+def sequentialOCR(dir, lang='eng'):
     result_list = ['win,elimination', 'lose,elimination',
                     'win,points', 'lose,points']
 
@@ -81,9 +81,9 @@ def sequentialOCR(dir):
         im1 = mydefs.pic2bin(im1, 190)
         im2 = mydefs.pic2bin(im2, 220)
         im3 = mydefs.pic2bin(im3, 170)
-        txt1 = OCRcore(im1, engine, builder, lang='jpn')
-        txt2 = OCRcore(im2, engine, builder, lang='jpn')
-        txt3 = OCRcore(im3, engine, builder, lang='jpn')
+        txt1 = OCRcore(im1, engine, builder, lang=lang)
+        txt2 = OCRcore(im2, engine, builder, lang=lang)
+        txt3 = OCRcore(im3, engine, builder, lang=lang)
         map = mydefs.ifMap(txt1)
         load = mydefs.ifLoading(txt2)
         result = mydefs.ifResult(txt3)

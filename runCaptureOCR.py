@@ -3,14 +3,26 @@ import mydefs
 import datetime
 import os
 import sys
-import pafy
+from yt_dlp import YoutubeDL
 from multiprocessing import Process
 
+# 利用可能な言語リスト
+lang_list = ['jpn', 'eng']
+
 if(__name__ == '__main__'):
-    url = sys.argv[1] 
+    url = sys.argv[1]
+    lang = sys.argv[2]
+
     if url == '':
         print('Capturer requires the URL to a video.')
         sys.exit(1)
+    if (lang in lang_list) == False:
+        print('Illegal language {}. Language must be within followings.'.format(lang))
+        print(lang_list)
+        sys.exit(1)
+
+    mydefs.LANG = lang
+
     print('Parallelly capturing the video from ' + url)
 
     # 日付を名前とするディレクトリを作成
@@ -22,10 +34,21 @@ if(__name__ == '__main__'):
         os.mkdir(date)
 
     print('Retrieving video info...')
-    video = pafy.new(url)
-    vlen = video.length
-    best = video.getbest(preftype="mp4")
-    best_url = best.url
+
+    ydl_opt = {
+        'format': 'best',
+        'skip_download': True
+    }
+
+    with YoutubeDL(ydl_opt) as ydl:
+        info = ydl.extract_info(url, download=False)
+        best_url = info['url']
+        vlen = info['duration']
+
+    print(best_url)
+    if len(best_url) == 0:
+        print('No available option for this video.', file=sys.stderr)
+        sys.exit(1)
     print('Done.')
 
     print('initializing multiprocessing...')
