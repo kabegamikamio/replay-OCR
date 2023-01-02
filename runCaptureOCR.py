@@ -54,7 +54,7 @@ if(__name__ == '__main__'):
     print('initializing multiprocessing...')
     process_list = []
     cpus = os.cpu_count()
-    block_size = int(vlen / cpus)
+    block_size = int(vlen / (cpus-1))
     start = 0
     end = block_size
 
@@ -68,7 +68,7 @@ if(__name__ == '__main__'):
         start = end + 1
         end = end + block_size
 
-    print("process " + str(cpus-1) + " launched")
+    print("process " + str(cpus-2) + " launched")
     process = Process(target=mydefs.captureVideo, args=(best_url, start, vlen, date, False))
     process.start()
     process_list.append(process)

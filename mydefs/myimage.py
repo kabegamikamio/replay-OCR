@@ -34,7 +34,7 @@ def cropPicture(im):
     aspect = width / height
     if aspect == 16/9:
         return cropPicture16x9(im)
-    elif aspect == 4/3:
+    else:
         return cropPicture4x3(im)
 
 def cropPicture4x3(im):
@@ -42,19 +42,39 @@ def cropPicture4x3(im):
     width = im.size[0]
     im1 = im.crop((int(width/10), int(height/20), int(width/2), int(height/5)))
     im2 = im.crop((int(width * 0.6), int(height/10), width, int(height/5)))
-    im3 = im.crop((int(width/3), int(height /5), int(width * 2/3), int(height * 2/5)))
+    im3 = im.crop((int(width/3), int(height /5), int(width * 2/3), int(height/2)))  # 通常は2/5で良い、ガレージのときは1/2
     im4 = im.crop((int(width * 209/450), 0, int(width * 216/450), int(height * 7/325)))
     im5 = im.crop((int(width * 234/450), 0, int(width * 241/450), int(height * 7/325)))
     im6 = im.crop((int(width * 209/450), 0, int(width * 241/450), int(height * 7/325)))
-    return im1, im2, im3, im4, im5, im6
+    return [im1, im2, im3, im4, im5, im6, im, im]
 
 def cropPicture16x9(im):
     height = im.size[1]
     width = im.size[0]
-    im1 = im.crop((int(width/4), int(height * 15/80), int(width/2), int(height * 19 / 80)))
-    im2 = im.crop((int(width * 23/40), int(height/5), int(width * 4/5), int(height * 9/40)))
-    im3 = im.crop((int(width * 5/12), int(height/5), int(width * 7/12), int(height * 2/5)))
+
+    # プレイヤーリスト、左右
+    l = []
+    r = []
+    up = int(0.15 * height)
+    bt = int(0.1875 * height)
+    gap = int(0.049 * height)
+
+    map     = im.crop((int(width/4), int(height * 15/80), int(width/2), int(height * 19 / 80)))
+    desc    = im.crop((int(width * 23/40), int(height/5), int(width * 4/5), int(height * 9/40)))
+    result  = im.crop((int(width * 5/12), int(height/5), int(width * 7/12), int(height * 2/5)))
     im4 = im.crop((int(width * 209/450), 0, int(width * 216/450), int(height * 7/325)))
     im5 = im.crop((int(width * 234/450), 0, int(width * 241/450), int(height * 7/325)))
     im6 = im.crop((int(width * 209/450), 0, int(width * 241/450), int(height * 7/325)))
-    return im1, im2, im3, im4, im5, im6
+
+    for i in range(7):
+        l_new = im.crop((int(width * 0.1), up, int(width * 0.13), bt))
+        r_new = im.crop((int(width * 0.87), up, int(width * 0.9), bt))
+        l.append(l_new)
+        r.append(r_new)
+        up = up + gap
+        bt = bt + gap
+
+    return [map, desc, result, 
+            im4, im5, im6,
+            l[0], l[1], l[2], l[3], l[4], l[5], l[6],
+            r[0], r[1], r[2], r[3], r[4], r[5], r[6]]

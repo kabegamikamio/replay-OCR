@@ -6,6 +6,7 @@ import os
 from tqdm import tqdm
 from multiprocessing import Process
 import mydefs
+import re
 
 # OCRのメイン部分
 # 直列・並列にする場合もこのメソッドを呼び出す
@@ -26,20 +27,47 @@ def OCRmain(im, lang='eng'):
     engine = engines[0]
 
     # OCRエンジンの設定
-    builder = pyocr.builders.TextBuilder(tesseract_layout = 5)
+    builder = pyocr.builders.TextBuilder(tesseract_layout = 3)
+    builder2 = pyocr.builders.DigitBuilder()
 
-    im1, im2, im3, im4, im5, im6 = mydefs.cropPicture4x3(im)
-    im1 = mydefs.pic2bin(im1, 200)
-    im2 = mydefs.pic2bin(im2, 200)
-    im3 = mydefs.pic2bin(im3, 170)
-    txt1 = OCRcore(im1, engine, builder, lang=lang)
-    txt2 = OCRcore(im2, engine, builder, lang=lang)
-    txt3 = OCRcore(im3, engine, builder, lang=lang)
-    map = mydefs.ifMap(txt1)
-    load = mydefs.ifLoading(txt2)
-    result = mydefs.ifResult(txt3)
+    ims = mydefs.cropPicture(im)
+    ims[0] = mydefs.pic2bin(ims[0], 195)
+    ims[1] = mydefs.pic2bin(ims[1], 200)
+    ims[2] = mydefs.pic2bin(ims[2], 170)
+
+    txt_l = []
+    txt_r = []
+
+    txt1 = OCRcore(ims[0], engine, builder, lang=lang)
+    txt2 = OCRcore(ims[1], engine, builder, lang=lang)
+    txt3 = OCRcore(ims[2], engine, builder, lang=lang)
+
+    for i in range(7):
+        im_l = mydefs.pic2bin(ims[6+i], 205)
+        im_r = mydefs.pic2bin(ims[13+i], 205)
+        l = OCRcore(im_l, engine, builder2, lang='eng')
+        r = OCRcore(im_r, engine, builder2, lang='eng')
+        l = str.replace(l, '\n', '')
+        r = str.replace(r, '\n', '')
+        l = re.sub(r"\D", "", l)
+        r = re.sub(r"\D", "", r)
+        if len(l) != 0:
+            txt_l.append(int(l))
+        if len(r) != 0:
+            txt_r.append(int(r))
+
+    if len(txt_l) != 0 and len(txt_r) != 0:
+        if max(txt_l) == 0:
+            print('left lose')
+        elif max(txt_r) == 0:
+            print('right lose')
+
+    map = mydefs.ifMap(txt1, lang)
+    print(txt1)
+    load = mydefs.ifLoading(txt2, lang)
+    result = mydefs.ifResult(txt3, lang)
     if(load != False):
-        ret = 'loading,' + map + '\n'
+        ret = 'loading,' + map if map != False else 'unknown' + '\n'
         return ret
     elif(result != False):
         ret = result_list[result-1] + '\n'

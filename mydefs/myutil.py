@@ -1,10 +1,9 @@
 import Levenshtein
-from mydefs import LANG
 
 # テキストがマップを表しているか
 # レーベンシュタイン距離をもとに判定
 # マップである場合はマップ名を返す
-def ifMap(txt):
+def ifMap(txt, lang='eng'):
     DIST_THRE = 0.5
     map_jpn  = ['ヒメルズドルフ', 'アルペンシュタット', '黒き黄金の村',
                 'ミデルブルフ', '運河', 'カスティーリャ', '砂漠の砂',
@@ -13,7 +12,7 @@ def ifMap(txt):
                 'ニューベイ', 'ノルマンディー', 'オアシスの椰子',
                 '港湾', 'ロックフィールド', 'ヴィニヤード', '冬のマリノフカ',
                 'ユーコン']
-    map_eng  = ['Alpen','BGV','Canal','Castilla','Desert Sands',
+    map_eng  = ['Alpen','Black Goldville','Canal','Castilla','Desert Sands',
                 'Dynasty\'s Pearl','Faust','Fort Despair','Ghost Factory',
                 'Hellas','Mayan Ruins','Middleburg','Molendijk','Naval Frontier',
                 'New Bay','Normandy','Oasis','Port Bay','Rockfield','Vineyards',
@@ -23,9 +22,9 @@ def ifMap(txt):
                 'МИДДЛБУРГ','МОЛЕНДЕЙК','МОРСКОЙ РУБЕЖ','НЬЮ-БЭЙ','НОРМАНДИЯ','ГОРЯЩИЕ ПЕСКИ',
                 'ПОРТ','БАЛТИЙСКИЙ ЩИТ','ВИНОГРАДНИКИ','ЗИМНЯЯ МАЛИНОВКА','ЮКОН']
 
-    if LANG == 'eng':
+    if lang == 'eng':
         map_list = map_eng
-    elif LANG == 'jpn':
+    elif lang == 'jpn':
         map_list = map_jpn
 
     map_dist = []
@@ -44,15 +43,15 @@ def ifMap(txt):
 # テキストが優勢戦のロード画面を表しているか
 # レーベンシュタイン距離をもとに判定
 # ロード画面である場合はTrueを返す
-def ifLoading(txt):
+def ifLoading(txt, lang='eng'):
     DIST_THRE = 0.5
     desc_jpn = '陣地を占領し、敵車輌を撃破せよ。'
     desc_eng = 'Objective:  capture bases and destroy enemy tanks.'
     desc_rus = 'Задача. захватывать точки и уничтожать танки противника.'
 
-    if LANG == 'eng':
+    if lang == 'eng':
         desc = desc_eng
-    elif LANG == 'jpn':
+    elif lang == 'jpn':
         desc = desc_jpn
 
     # txt = txt.strip()
@@ -69,7 +68,7 @@ def ifLoading(txt):
 # 勝敗を表す場合勝敗とその理由を返す
 # 0: 勝敗データなし
 # 1: 勝利(殲滅), 2: 敗北(殲滅), 3: 勝利(ポイント), 4: 敗北(ポイント)
-def ifResult(txt):
+def ifResult(txt, lang='eng'):
     DIST_THRE = 0.5
     result_dist = []
     result_jpn =   ['勝利!敵車輌が全滅した', '敗北!味方車輌が全滅した',
@@ -81,9 +80,9 @@ def ifResult(txt):
                     'Defeat enemy team earned 1,000 victory points']
     result_rus =   ['Победа! Союзники заработали 1000 очков иобеды',]
 
-    if LANG == 'eng':
+    if lang == 'eng':
         result_list = result_eng
-    elif LANG == 'jpn':
+    elif lang == 'jpn':
         result_list = result_jpn
 
     # txt = txt.strip()
