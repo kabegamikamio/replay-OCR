@@ -7,6 +7,7 @@ from tqdm import tqdm
 from multiprocessing import Process
 import mydefs
 import re
+import cv2
 
 # OCRのメイン部分
 # 直列・並列にする場合もこのメソッドを呼び出す
@@ -43,10 +44,15 @@ def OCRmain(im, lang='eng'):
     txt3 = OCRcore(ims[2], engine, builder, lang=lang)
 
     for i in range(7):
-        im_l = mydefs.pic2bin(ims[6+i], 205)
-        im_r = mydefs.pic2bin(ims[13+i], 205)
+        im_l = mydefs.pic2bin(ims[6+i], 220, mydefs.RED_BLUE)
+        # cv_l = np.array(ims[6+i], dtype=np.uint8)
+        # cv_l = cv2.cvtColor(cv_l, cv2.COLOR_RGB2BGR)
+        im_r = mydefs.pic2bin(ims[13+i], 220, mydefs.RED_BLUE)
+        # im_l = cv2.adaptiveThreshold(cv_l, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 51, 20)
         l = OCRcore(im_l, engine, builder2, lang='eng')
         r = OCRcore(im_r, engine, builder2, lang='eng')
+        plt.imshow(im_r)
+        plt.show()
         l = str.replace(l, '\n', '')
         r = str.replace(r, '\n', '')
         l = re.sub(r"\D", "", l)
@@ -57,9 +63,11 @@ def OCRmain(im, lang='eng'):
             txt_r.append(int(r))
 
     if len(txt_l) != 0 and len(txt_r) != 0:
-        if max(txt_l) == 0:
+        print(txt_l)
+        print(txt_r)
+        if len(txt_l) == 0:
             print('left lose')
-        elif max(txt_r) == 0:
+        elif len(txt_r) == 0:
             print('right lose')
 
     map = mydefs.ifMap(txt1, lang)

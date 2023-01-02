@@ -21,7 +21,7 @@ def pic2bin(image, border, mode=NORMAL_BIN):
                     r = g = b = 255
                 image2.putpixel((x, y), (r, g, b))
             if mode == RED_BLUE:   # 赤いピクセルを白くして二値化
-                if r > 50 or b > 50:
+                if r > border and g > border and b > border:
                     r = g = b = 255
                 else:
                     r = g = b = 0
