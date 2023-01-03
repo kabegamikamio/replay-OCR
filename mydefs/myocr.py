@@ -35,6 +35,19 @@ def OCRmain(im, lang='eng'):
     ims[0] = mydefs.pic2bin(ims[0], 195)
     ims[1] = mydefs.pic2bin(ims[1], 200)
     ims[2] = mydefs.pic2bin(ims[2], 170)
+    ims[3] = mydefs.pic2bin(ims[3], 180)
+    ims[4] = mydefs.pic2bin(ims[4], 180)
+    plt.imshow(ims[3])
+    plt.show()
+
+    '''
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 2, 1)
+    ax1.imshow(ims[3])
+    ax2 = fig.add_subplot(1, 2, 2)
+    ax2.imshow(ims[4])
+    plt.show()
+    '''
 
     txt_l = []
     txt_r = []
@@ -42,7 +55,21 @@ def OCRmain(im, lang='eng'):
     txt1 = OCRcore(ims[0], engine, builder, lang=lang)
     txt2 = OCRcore(ims[1], engine, builder, lang=lang)
     txt3 = OCRcore(ims[2], engine, builder, lang=lang)
+    txt4 = OCRcore(ims[3], engine, builder, lang='eng')
+    txt5 = OCRcore(ims[4], engine, builder, lang='eng')
+    print(txt5)
 
+    flag_l, score_l = mydefs.ifScore(txt4)
+    flag_r, score_r = mydefs.ifScore(txt5)
+
+    if flag_l == True and flag_r == True:
+        print('Score: {} vs {}'.format(score_l, score_r))
+        if score_l == 0:
+            print('Left lose')
+        elif score_r == 0:
+            print('Right lose')
+
+    '''
     for i in range(7):
         im_l = mydefs.pic2bin(ims[6+i], 220, mydefs.RED_BLUE)
         # cv_l = np.array(ims[6+i], dtype=np.uint8)
@@ -51,8 +78,8 @@ def OCRmain(im, lang='eng'):
         # im_l = cv2.adaptiveThreshold(cv_l, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 51, 20)
         l = OCRcore(im_l, engine, builder2, lang='eng')
         r = OCRcore(im_r, engine, builder2, lang='eng')
-        plt.imshow(im_r)
-        plt.show()
+        # plt.imshow(im_r)
+        # plt.show()
         l = str.replace(l, '\n', '')
         r = str.replace(r, '\n', '')
         l = re.sub(r"\D", "", l)
@@ -69,6 +96,7 @@ def OCRmain(im, lang='eng'):
             print('left lose')
         elif len(txt_r) == 0:
             print('right lose')
+    '''
 
     map = mydefs.ifMap(txt1, lang)
     print(txt1)

@@ -59,11 +59,20 @@ def cropPicture16x9(im):
     bt = int(0.1875 * height)
     gap = int(0.049 * height)
 
+    '''縮小UIに対応したもの
     map     = im.crop((int(width/4), int(height * 15/80), int(width/2), int(height * 19 / 80)))
     desc    = im.crop((int(width * 23/40), int(height/5), int(width * 4/5), int(height * 9/40)))
     result  = im.crop((int(width * 5/12), int(height/5), int(width * 7/12), int(height * 2/5)))
-    im4 = im.crop((int(width * 209/450), 0, int(width * 216/450), int(height * 7/325)))
-    im5 = im.crop((int(width * 234/450), 0, int(width * 241/450), int(height * 7/325)))
+    hp_l = im.crop((int(width * 0.42), 0, int(width * 0.46), int(height * 0.04)))
+    hp_r = im.crop((int(width * 0.54), 0, int(width * 0.58), int(height * 0.04)))
+    im6 = im.crop((int(width * 209/450), 0, int(width * 241/450), int(height * 7/325)))
+    '''
+
+    map     = im.crop((int(width * 0.18), int(height * 0.13), int(width * 0.4), int(height * 0.18)))
+    desc    = im.crop((int(width * 0.6), int(height * 0.14), int(width * 0.86), int(height * 0.175)))
+    result  = im.crop((int(width * 5/12), int(height/5), int(width * 7/12), int(height * 2/5)))
+    hp_l = im.crop((int(width * 0.29), int(height * 0.01), int(width * 0.457), int(height * 0.035)))
+    hp_r = im.crop((int(width * 0.543), int(height * 0.01), int(width * 0.81), int(height * 0.035)))
     im6 = im.crop((int(width * 209/450), 0, int(width * 241/450), int(height * 7/325)))
 
     for i in range(7):
@@ -75,6 +84,6 @@ def cropPicture16x9(im):
         bt = bt + gap
 
     return [map, desc, result, 
-            im4, im5, im6,
+            hp_l, hp_r, im6,
             l[0], l[1], l[2], l[3], l[4], l[5], l[6],
             r[0], r[1], r[2], r[3], r[4], r[5], r[6]]

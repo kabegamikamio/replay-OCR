@@ -1,4 +1,21 @@
 import Levenshtein
+import re
+
+# 文字列がスコア (数字以外の文字を含まない) であるか判定
+#  文字列がスコアである場合: Trueとスコア
+#  文字列がスコアでない場合: False
+# を返す
+def ifScore(txt):
+    print(txt)
+    txt = re.sub(' +', '', txt)
+    dig = re.match('\d+', txt)
+    if dig == None:
+        flag = False
+        score = 0
+    else:
+        flag = True
+        score = int(dig.group())
+    return flag, score
 
 # テキストがマップを表しているか
 # レーベンシュタイン距離をもとに判定
@@ -12,7 +29,7 @@ def ifMap(txt, lang='eng'):
                 'ニューベイ', 'ノルマンディー', 'オアシスの椰子',
                 '港湾', 'ロックフィールド', 'ヴィニヤード', '冬のマリノフカ',
                 'ユーコン']
-    map_eng  = ['Alpen','Black Goldville','Canal','Castilla','Desert Sands',
+    map_eng  = ['Alpenstadt','Black Goldville','Canal','Castilla','Desert Sands',
                 'Dynasty\'s Pearl','Faust','Fort Despair','Ghost Factory',
                 'Hellas','Mayan Ruins','Middleburg','Molendijk','Naval Frontier',
                 'New Bay','Normandy','Oasis','Port Bay','Rockfield','Vineyards',

@@ -21,7 +21,7 @@ def captureVideo(url, start, end, dir, writeout=True):
         f = open(log_name, 'w')
 
     # for t in tqdm.tqdm(range(start, end)):
-    for t in tqdm(range(start, end+1)):
+    for t in range(start, end+1):
         ret,frame = cap.read()    # フレームを取得, numpy.ndarray
 
         # grabでフレームを読み飛ばす、setを使うと遅くなる

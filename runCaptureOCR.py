@@ -37,7 +37,8 @@ if(__name__ == '__main__'):
 
     ydl_opt = {
         'format': 'best',
-        'skip_download': True
+        'skip_download': True,
+        'silent': True
     }
 
     with YoutubeDL(ydl_opt) as ydl:
@@ -51,12 +52,19 @@ if(__name__ == '__main__'):
         sys.exit(1)
     print('Done.')
 
+    if (len(sys.argv) > 3):
+        start = int(sys.argv[3])
+    else:
+        start = 0
+
+    if (len(sys.argv) > 4):
+        vlen = int(sys.argv[4])
+
     print('initializing multiprocessing...')
     process_list = []
     cpus = os.cpu_count()
-    block_size = int(vlen / (cpus-1))
-    start = 0
-    end = block_size
+    block_size = int((vlen - start) / (cpus-1))
+    end = start + block_size
 
     print("cpus: " + str(cpus))
 
