@@ -1,6 +1,9 @@
 # WoTB replay parser by OCR
 Coded by kabegamikamio (discord: 壁紙紙雄#1616)
 
+**現在新機能実装とデバッグのため一時的にパッケージの配布を停止中です。**
+配布再開時期は未定です。
+
 - [WoTB replay parser by OCR](#wotb-replay-parser-by-ocr)
   - [このプログラムについて](#このプログラムについて)
     - [チェンジログ](#チェンジログ)
